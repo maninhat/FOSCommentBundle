@@ -271,8 +271,11 @@
                                     $('#' + form_data.scoreHolder).html(data);
                                     that.trigger('fos_comment_vote_comment', data, form);
                                 },
-                                function(data){
-                                    alert(data);
+                                function(data, statusCode) {
+
+                                   var json = $.parseJSON(data);
+
+                                    that.trigger('fos_comment_form_error', json);
                                 }
                             );
                         }

@@ -105,18 +105,18 @@ class ThreadController extends Controller
         $form = $this->container->get('fos_comment.form_factory.thread')->createForm();
         $form->setData($thread);
 
-            $form->handleRequest($request);
+        $form->handleRequest($request);
 
-            if ($form->isValid()) {
-                if (null !== $threadManager->findThreadById($thread->getId())) {
-                    $this->onCreateThreadErrorDuplicate($form);
-                }
-
-                // Add the thread
-                $threadManager->saveThread($thread);
-
-                return $this->getViewHandler()->handle($this->onCreateThreadSuccess($form));
+        if ($form->isValid()) {
+            if (null !== $threadManager->findThreadById($thread->getId())) {
+                $this->onCreateThreadErrorDuplicate($form);
             }
+
+            // Add the thread
+            $threadManager->saveThread($thread);
+
+            return $this->getViewHandler()->handle($this->onCreateThreadSuccess($form));
+        }
 
 
         return $this->getViewHandler()->handle($this->onCreateThreadError($form));
@@ -764,10 +764,11 @@ class ThreadController extends Controller
                 array(
                     'id' => $id,
                     'commentId' => $commentId,
-                    'form' => $form->getErrors(),
+                    'errors' => $form->getErrors(),
                 )
-            ) ->setTemplate(new TemplateReference('FOSCommentBundle', 'Thread', 'vote_new'));
+            );//->setTemplate(new TemplateReference('FOSCommentBundle', 'Thread', 'vote_new'));
         $view->setFormat('json');
+
         return $view;
     }
 
@@ -820,7 +821,7 @@ class ThreadController extends Controller
     protected function onOpenThreadSuccess(FormInterface $form)
     {
 
-        return     View::createRouteRedirect(
+        return View::createRouteRedirect(
             'fos_comment_edit_thread_commentable',
             array('id' => $form->getData()->getId(), 'value' => !$form->getData()->isCommentable())
         );

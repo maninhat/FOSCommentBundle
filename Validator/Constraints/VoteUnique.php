@@ -16,16 +16,17 @@ use Symfony\Component\Validator\Constraint;
 
 class VoteUnique extends Constraint{
     public  $message_unique_comment='already.commented';
+    public  $message_yourself_comment='once.voted';
+
 
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;
     }
 
+
     public function validatedBy()
     {
         return 'fos_comment.validator.unique.voter';
     }
-
-
-} 
+}

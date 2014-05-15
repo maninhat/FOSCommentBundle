@@ -10,6 +10,9 @@ namespace FOS\CommentBundle\Validator\Constraints;
 
 
 use B2B\SiteBundle\Entity\Comments\Vote;
+use Doctrine\Common\Util\Debug;
+use FOS\CommentBundle\Model\SignedCommentInterface;
+use FOS\CommentBundle\Model\SignedVoteInterface;
 use FOS\CommentBundle\Model\VoteManagerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Validator\Constraint;
@@ -49,20 +52,38 @@ class VoteUniqueValidator extends ConstraintValidator
     {
         $user = $this->securityContext->getToken()->getUser();
 
-        $existingVote = $this->voteManager->findVoteBy(
-            array(
-                'comment' => $vote->getComment(),
-                'voter' => $user,
-            )
-        );
+        if ($vote instanceof SignedVoteInterface
+            && $vote->getComment()->getAuthor() == $user
+        ) {
+            $this->context->addViolation(
 
-        if($existingVote){
-            $this->context->addViolationAt(
-                'vonter',
-                $constraint->message_unique_comment,
+                $constraint->message_yourself_comment,
                 array(),
                 null
             );
+
+
+        }
+
+        if ($vote->getComment() instanceof SignedCommentInterface) {
+
+            $existingVote = $this->voteManager->findVoteBy(
+                array(
+                    'comment' => $vote->getComment(),
+                    'voter' => $user,
+                )
+            );
+
+            if ($existingVote) {
+                $this->context->addViolation(
+
+                    $constraint->message_unique_comment,
+                    array(),
+                    null
+                );
+
+
+            }
         }
     }
 }

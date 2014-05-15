@@ -33,6 +33,7 @@
                 <value>isVoteValid</value>
             </option>
         </constraint>
+        <constraint name="FOS\CommentBundle\Validator\Constraints\VoteUnique" />
     </class>
 
     <class name="FOS\CommentBundle\Model\Thread">

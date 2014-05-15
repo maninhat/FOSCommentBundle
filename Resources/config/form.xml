@@ -69,6 +69,12 @@
             <argument>%fos_comment.form.vote.name%</argument>
         </service>
 
+        <service id="fos_comment.validator.unique.voter" class="FOS\CommentBundle\Validator\Constraints\VoteUniqueValidator">
+            <argument type="service" id="fos_comment.manager.vote" />
+            <argument type="service" id="security.context" />
+            <tag name="validator.constraint_validator" alias="fos_comment.validator.unique.voter" />
+        </service>
+
     </services>
 
 </container>

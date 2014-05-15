@@ -270,6 +270,9 @@
                                 function(data) {
                                     $('#' + form_data.scoreHolder).html(data);
                                     that.trigger('fos_comment_vote_comment', data, form);
+                                },
+                                function(data){
+                                    alert(data);
                                 }
                             );
                         }

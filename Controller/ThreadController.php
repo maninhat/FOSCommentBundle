@@ -55,6 +55,7 @@ class ThreadController extends Controller
      *
      * @param string $id
      *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return View
      */
     public function getThreadAction($id)

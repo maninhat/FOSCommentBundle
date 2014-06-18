@@ -12,9 +12,9 @@
 namespace FOS\CommentBundle\Model;
 
 use DateTime;
+use Symfony\Component\Validator\Context\ExecutionContext;
 
-use Symfony\Component\Validator\ExecutionContext;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Storage agnostic vote object - Requires FOS\UserBundle
@@ -97,15 +97,16 @@ abstract class Vote implements VoteInterface
         }
     }
 
-    public function isVoteUnique(ExecutionContextInterface $context)
+    public function isVoteUnique(ExecutionContext $context)
     {
-        $comment=$this->getComment();
-        if($comment->getVotes)
-        $message = 'You can vote once';
-        $propertyPath = $context->getPropertyPath() . '.value';
+        $comment = $this->getComment();
+        if ($comment->getVotes()) {
+            $message = 'You can vote once';
+            $propertyPath = $context->getPropertyPath() . '.value';
 
 
-        $context->addViolationAt($propertyPath, $message);
+            $context->addViolationAt($propertyPath, $message);
+        }
 
     }
 

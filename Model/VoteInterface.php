@@ -11,7 +11,7 @@
 
 namespace FOS\CommentBundle\Model;
 
-use Symfony\Component\Validator\ExecutionContext;
+use Symfony\Component\Validator\Context\ExecutionContext;
 
 /**
  * Methods a vote should implement.

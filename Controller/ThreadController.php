@@ -879,13 +879,12 @@ class ThreadController extends Controller
     {
         $view = View::create()
             ->setStatusCode(Codes::HTTP_BAD_REQUEST)
-            ->setData(
-                array(
-                    'form' => $form,
-                    'id' => $id,
-                    'value' => $form->getData()->getState(),
-                )
-            )
+            ->setData(array(
+                'form' => $form,
+                'id' => $id,
+                'commentId' => $form->getData()->getId(),
+                'value' => $form->getData()->getState(),
+            ))
             ->setTemplate(new TemplateReference('FOSCommentBundle', 'Thread', 'comment_remove'));
 
         return $view;
